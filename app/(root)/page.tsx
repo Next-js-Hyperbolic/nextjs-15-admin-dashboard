@@ -1,7 +1,13 @@
-import { Button } from "@/components/ui/button";
+import BookList from "@/components/BookList";
+import BookOverview from "@/components/BookOverview";
 
-export default function Home() {
+const Home = () => {
   return (
-    <Button>Test Button</Button>
-  );
+    <>
+      <BookOverview />
+      <BookList />
+    </>
+  )
 }
+
+export default Home
