@@ -29,7 +29,7 @@ const BookOverview = ({ title, author, genre, rating, totalCopies, availableCopi
             <p className='book-description'>{description}</p>
 
             <Button className='book-overview_btn'>
-              <Image src={BookIcon} alt='book' width={20} height={20} />
+              <Image src={BookIcon} alt='book' width={20} height={20}  />
               <p className='font-bebas-neue text-xl text-dark-100'>Borrow</p>
             </Button>
         </div>

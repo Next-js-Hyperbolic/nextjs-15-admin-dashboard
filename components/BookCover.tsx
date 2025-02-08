@@ -25,7 +25,7 @@ const BookCover = ({className, variant="regular", coverColor='#012B48', coverIma
     <div className={cn('relative transition-all duration-300', variantStyles[variant], className)}>
         <BookCoverSvg coverColor={coverColor} />
         <div className='absolute z-10' style={{ left: '12%', width: '87.5%', height: '88%'}}>
-            <Image src={coverImageUrl} alt='Book cover' fill className='rounded-sm object-fill' />
+            <Image src={coverImageUrl} alt='Book cover' fill className='rounded-sm object-fill' sizes='default'/>
         </div>
     </div>
   )
