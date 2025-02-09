@@ -13,7 +13,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -73,7 +72,7 @@ const AuthForm = <T extends FieldValues>({
                   </FormLabel>
                   <FormControl>
                     {field.name === 'universityCard' ? (
-                      <ImageUpload />
+                      <ImageUpload onFileChange={field.onChange} />
                     ) : (
                       <Input
                         required
