@@ -10,7 +10,7 @@ import {
   UseFormReturn,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { z, ZodObject, ZodType } from 'zod';
 import {
   FormControl,
   FormField,
@@ -24,12 +24,14 @@ import { Button } from './ui/button';
 import Link from 'next/link';
 import { FIELD_LABELS, FIELD_TYPES } from '@/constants';
 import ImageUpload from './ImageUpload';
+import { toast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 interface Props<T extends FieldValues> {
-  type: 'SIGN_IN' | 'SIGN_UP';
-  schema: z.ZodObject<T>;
-  defaultFieldValues: DefaultValues<T>;
+  schema: ZodType<T>;
+  defaultFieldValues: T;
   onSubmit: (data: T) => Promise<{ success: boolean; error?: string }>;
+  type: 'SIGN_IN' | 'SIGN_UP';
 }
 
 const AuthForm = <T extends FieldValues>({
@@ -39,14 +41,43 @@ const AuthForm = <T extends FieldValues>({
   onSubmit,
 }: Props<T>) => {
   const isSignIn = type === 'SIGN_IN';
+  const router = useRouter();
 
   const form: UseFormReturn<T> = useForm({
     resolver: zodResolver(schema),
-    defaultValues: defaultFieldValues,
+    defaultValues: defaultFieldValues as DefaultValues<T>,
   });
 
   const handleSubmit: SubmitHandler<T> = async data => {
-    return onSubmit(data);
+    try {
+      const result = await onSubmit(data);
+
+      if (result.success) {
+        toast({
+          title: 'Success',
+          description: `Successfully ${isSignIn ? 'signed in' : 'signed up'}`,
+        });
+
+        router.push('/');
+      } else {
+        toast({
+          title: `Something went wrong ${isSignIn ? 'signing in' : 'signing up'}`,
+          description: result.error ?? 'Please try again.',
+          variant: 'destructive',
+        });
+      }
+      toast({
+        title: `Something went wrong with ${isSignIn ? 'sign-in' : 'sign-up'}`,
+        description: result.error ?? 'Please try again.',
+        variant: 'destructive',
+      });
+    } catch (error: any) {
+      toast({
+        title: `Something went wrong with ${isSignIn ? 'sign-in' : 'sign-up'}`,
+        description: error.message ?? 'Please try again.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (

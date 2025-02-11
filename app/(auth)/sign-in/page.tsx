@@ -2,8 +2,9 @@
 
 import React from 'react';
 import AuthForm from '@/components/AuthForm';
-import { signInSchema } from '@/lib/formValidations';
 import { SIGN_IN_FIELD_DEFAULT } from '@/constants';
+import { signInSchema } from '@/lib/formValidations';
+import { signInWithCredentials } from '@/lib/actions/auth';
 
 const Page = () => {
   return (
@@ -11,9 +12,7 @@ const Page = () => {
       type='SIGN_IN'
       schema={signInSchema}
       defaultFieldValues={SIGN_IN_FIELD_DEFAULT}
-      onSubmit={async data => {
-        return { success: true };
-      }}
+      onSubmit={signInWithCredentials}
     />
   );
 };

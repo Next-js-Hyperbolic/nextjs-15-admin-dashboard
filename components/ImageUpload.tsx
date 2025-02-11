@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { Button } from './ui/button';
 import { error } from 'console';
 import { toast } from '@/hooks/use-toast';
+import { Loader2 } from 'lucide-react';
 
 const {
   env: {
@@ -45,17 +46,17 @@ const ImageUpload = ({
   const [loading, setLoading] = useState(false);
 
   const onError = (error: any) => {
-    console.log(error);
+    setLoading(false);
     toast({
       title: 'Image upload failed',
-      description: 'Your image could not be uploaded. Please try again.',
+      description: error ?? 'Please try uploading again.',
       variant: 'destructive',
     });
   };
   const onSuccess = (res: any) => {
     setFile(res);
     onFileChange(res.filePath);
-
+    setLoading(false);
     toast({
       title: 'Image uploaded successfully',
       description: `${res.filePath} uploaded!`,
@@ -72,7 +73,9 @@ const ImageUpload = ({
         <IKUpload
           className='hidden'
           ref={ikUploadRef}
-          onLoadStart={() => setLoading(true)}
+          // onLoadStart={() => setLoading(true)}
+          // onLoad={() => setLoading(true)}
+          onUploadStart={() => setLoading(true)}
           onError={onError}
           onSuccess={onSuccess}
           fileName='test-upload.png'
@@ -91,15 +94,21 @@ const ImageUpload = ({
               }
             }}
           >
-            <Image
-              src='/icons/upload.svg'
-              alt='upload'
-              width={20}
-              height={20}
-              className='object-contain'
-            />
-            <p className='text-base text-light-100'>Upload ID Image File</p>
-            {file && <p className='upload-filename'>{file.filePath}</p>}
+            {loading ? (
+              <Loader2 className='animate-spin' />
+            ) : (
+              <>
+                <Image
+                  src='/icons/upload.svg'
+                  alt='upload'
+                  width={20}
+                  height={20}
+                  className='object-contain'
+                />
+                <p className='text-base text-light-100'>Upload ID Image File</p>
+                {file && <p className='upload-filename'>{file.filePath}</p>}
+              </>
+            )}
           </Button>
 
           {file && (
