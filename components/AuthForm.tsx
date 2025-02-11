@@ -66,11 +66,6 @@ const AuthForm = <T extends FieldValues>({
           variant: 'destructive',
         });
       }
-      toast({
-        title: `Something went wrong with ${isSignIn ? 'sign-in' : 'sign-up'}`,
-        description: result.error ?? 'Please try again.',
-        variant: 'destructive',
-      });
     } catch (error: any) {
       toast({
         title: `Something went wrong with ${isSignIn ? 'sign-in' : 'sign-up'}`,

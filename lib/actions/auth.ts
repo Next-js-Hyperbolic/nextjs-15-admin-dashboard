@@ -12,6 +12,11 @@ export const signInWithCredentials = async (
 ) => {
   const { email, password } = params;
 
+  // const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
+  // const { success } = await ratelimit.limit(ip);
+
+  // if (!success) return redirect("/too-fast");
+
   try {
     const result = await signIn('credentials', {
       email,
@@ -19,14 +24,14 @@ export const signInWithCredentials = async (
       redirect: false,
     });
 
-    if (result.error) {
+    if (result?.error) {
       return { success: false, error: result.error };
     }
 
     return { success: true };
   } catch (error) {
-    console.log(`Sign in with credentials error: ${error}`);
-    return { success: false, error: 'Failed to sign in with credentials' };
+    console.log(error, 'Signin error');
+    return { success: false, error: 'Signin error' };
   }
 };
 
@@ -54,7 +59,7 @@ export const signUp = async (params: AuthCredentials) => {
       universityCard,
     });
 
-    // await signInWithCredentials({ email, password });
+    await signInWithCredentials({ email, password });
 
     return { success: true };
   } catch (error) {

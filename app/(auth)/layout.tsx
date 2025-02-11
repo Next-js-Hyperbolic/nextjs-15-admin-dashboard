@@ -7,9 +7,9 @@ import { redirect } from 'next/navigation';
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();
-  // if (session) {
-  //   redirect('/');
-  // }
+  if (session) {
+    redirect('/');
+  }
   return (
     <main className='auth-container'>
       <section className='auth-form'>
